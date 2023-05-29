@@ -6,7 +6,6 @@ import sensorRoutes from './routes/sensor.routes';
 
 const router = express();
 
-/** Only start the server of mongo connects */
 const StartServer = () => {
   router.use((req: Request, res: Response, next: NextFunction) => {
     /** Log the Request */

@@ -3,13 +3,14 @@ import { createPoint, queryApi, writeApi } from '../database';
 import { Point } from '@influxdata/influxdb-client';
 import { config } from '../config/config';
 
-const addSensorData = (req: Request, res: Response, next: NextFunction) => {
-  const newPoint: Point = createPoint(
-    'temperature',
-    { sensor_id: 'TLM01' },
-    { value: 20.0 },
-  );
-  writeApi.writePoint(newPoint);
+const addSensorData = async (
+  req: Request,
+  res: Response,
+  next: NextFunction,
+) => {
+  const { measurement, tags, fields } = req.body;
+  const newPoint: Point = createPoint(measurement, tags, fields);
+  writeApi.writePoints([newPoint]);
   writeApi.close().then(() => {
     res.status(201).json({ newPoint });
   });
